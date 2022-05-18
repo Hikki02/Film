@@ -39,6 +39,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # apps
+    'apps.categories',
+    'apps.comments',
+    'apps.feedback',
+    'apps.products',
+    'apps.users',
+
+    # lib
+    'rest_framework',
+    'drf_yasg',
+
+
 ]
 
 MIDDLEWARE = [
@@ -51,7 +64,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'Films.urls'
+ROOT_URLCONF = 'films.urls'
 
 TEMPLATES = [
     {
