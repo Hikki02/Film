@@ -1,11 +1,15 @@
 from django.db import models
 
-TYPE_MESSAGE = None
-
 
 class FeedBack(models.Model):
-    name = models.CharField(max_length=50)
-    email = models.EmailField()  # валидация нужно
-    type_message = models.CharField(max_length=1, choices=TYPE_MESSAGE)
-    text = models.TextField()
+    FEEDBACK_CHOICE = (
+        (1, 'Правообладание и юридические аспекты'),
+        (2, 'Вопросы рекламы'),
+        (3, 'Проблемы на сайте'),
+        (4, 'Пожелания и хотелки'),
+    )
 
+    name = models.CharField(max_length=50)
+    email = models.EmailField()
+    type_message = models.PositiveSmallIntegerField(choices=FEEDBACK_CHOICE)
+    text = models.TextField()

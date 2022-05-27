@@ -8,8 +8,12 @@ django = "*"
 python-decouple = "*"
 install = "*"
 drf-yasg = "*"
+pillow = "*"
+django-translator = "*"
 
 [dev-packages]
+django-debug-toolbar = "*"
+django-extensions = "*"
 
 [requires]
 python_version = "3.9"

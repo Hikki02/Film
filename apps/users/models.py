@@ -32,11 +32,10 @@ class UserManager(BaseUserManager):
         self._create(email, password, is_staff=True, is_superuser=True, is_active=True)
 
 
-# Create your models here.
 class User(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(max_length=255, null=True, blank=True)
+    username = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
-    avatar = models.ImageField(null=True, blank=True)
+    avatar = models.ImageField(upload_to='users/uploads/%Y/%m/%d/', null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
