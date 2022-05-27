@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from apps.products.models import Product, ProductCategoryRelation, VideoProduct, ProductImage, ShortEpisodDesc
+from apps.products.models import Product, ProductCategoryRelation, VideoProduct, ProductImage, ShortEpisodDesc, \
+    ProductUserRelation
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
@@ -49,3 +50,21 @@ class ProductSerializer(serializers.ModelSerializer):
             'product_video', 'product_image', 'short_epis_desc',
             'category_product',
         )
+
+
+class ProductUserRelationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ProductUserRelation
+        fields = ('user', 'product', 'rate', )
+
+    # def create(self, validated_data):
+    #     request = self.context["request"]
+    #     ModelClass = self.Meta.model
+    #
+    #     instance = ModelClass.objects.get_or_create(
+    #         **validated_data, **{"user": request.user}
+    #     )
+    #     return instance
+    #
+

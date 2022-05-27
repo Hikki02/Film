@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from apps.products.models import Product, ProductCategoryRelation, VideoProduct, ProductImage, ShortEpisodDesc
+from apps.products.models import Product, ProductCategoryRelation, VideoProduct, ProductImage, ShortEpisodDesc, \
+    ProductUserRelation
 
 
 @admin.register(Product)
@@ -10,6 +11,11 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(ProductCategoryRelation)
 class ProductCategoryRelationAdmin(admin.ModelAdmin):
+    ...
+
+
+@admin.register(ProductUserRelation)
+class ProductUserRelationAdmin(admin.ModelAdmin):
     ...
 
 

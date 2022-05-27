@@ -3,7 +3,13 @@ from django.db import models
 from apps.categories.models import Category
 
 
-class Product(models.Model):
+class ProductCategoryRelation(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    product = models.ForeignKey('Product', on_delete=models.CASCADE)
+
+
+class ProductUserRelation(models.Model):
+
     RATE_CHOICE = (
         (1, 1),
         (2, 2),
@@ -11,24 +17,25 @@ class Product(models.Model):
         (4, 4),
         (5, 5),
     )
+    # Добавить is_bookmark
+    user = models.ForeignKey('users.User', on_delete=models.CASCADE)
+    product = models.ForeignKey('Product', on_delete=models.CASCADE)
+    rate = models.PositiveSmallIntegerField(choices=RATE_CHOICE, null=True, blank=True)
 
+
+class Product(models.Model):
     category = models.ManyToManyField(Category, through='ProductCategoryRelation', related_name='category_product')
+    user = models.ManyToManyField('users.User', through='ProductUserRelation', related_name='user_product')
     name = models.CharField(max_length=250)
     year_of_release = models.PositiveSmallIntegerField()
     type = models.CharField(max_length=50)
     num_of_ep = models.CharField(max_length=125)
     producer = models.CharField(max_length=125)
-    rating = models.PositiveSmallIntegerField(choices=RATE_CHOICE)
     desc = models.TextField()
     teg = models.CharField(max_length=225)
 
     def __str__(self):
         return f'{self.name}'
-
-
-class ProductCategoryRelation(models.Model):
-    user = models.ForeignKey(Category, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
 
 class VideoProduct(models.Model):
@@ -48,7 +55,8 @@ class ProductImage(models.Model):
 
 
 class ShortEpisodDesc(models.Model):
-    product = models.ForeignKey(Product, null=True, blank=True, on_delete=models.CASCADE, related_name='short_epis_desc')
+    product = models.ForeignKey(Product, null=True, blank=True, on_delete=models.CASCADE,
+                                related_name='short_epis_desc')
     name = models.CharField(max_length=50)
     desc = models.TextField()
 
