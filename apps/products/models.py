@@ -2,7 +2,7 @@ from django.db import models
 from apps.categories.models import Category
 
 class Product(models.Model):
-    name = models.CharField(250)
+    name = models.CharField(max_length=225)
     year_of_release = models.PositiveSmallIntegerField()
     genre = models.CharField(max_length=225)  # Или будет manytomay with category
     type = models.CharField(max_length=50)
