@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
-from rest_framework.generics import ListAPIView, ListCreateAPIView
+from rest_framework.generics import ListAPIView, ListCreateAPIView, CreateAPIView
+from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin
 
 from apps.products.models import Product, ProductUserRelation
 from apps.products.serializers import ProductSerializer, ProductUserRelationSerializer
@@ -14,7 +15,4 @@ class ProductList(ListAPIView):
 
 class ProductUserRelationCreate(ListCreateAPIView):
     serializer_class = ProductUserRelationSerializer
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        return queryset.filter(user=self.request.user)
+    queryset = ProductUserRelation.objects.all()

@@ -53,18 +53,12 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class ProductUserRelationSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = ProductUserRelation
-        fields = ('user', 'product', 'rate', )
+        fields = ('user_prod_rel', 'product_prod_rel', 'rate',)
 
-    # def create(self, validated_data):
-    #     request = self.context["request"]
-    #     ModelClass = self.Meta.model
-    #
-    #     instance = ModelClass.objects.get_or_create(
-    #         **validated_data, **{"user": request.user}
-    #     )
-    #     return instance
-    #
+    def create(self, validated_data):
 
+        ModelClass = self.Meta.model
+        obj, _ = ModelClass.objects.get_or_create(**validated_data)
+        return obj

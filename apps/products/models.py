@@ -9,7 +9,6 @@ class ProductCategoryRelation(models.Model):
 
 
 class ProductUserRelation(models.Model):
-
     RATE_CHOICE = (
         (1, 1),
         (2, 2),
@@ -18,8 +17,10 @@ class ProductUserRelation(models.Model):
         (5, 5),
     )
     # Добавить is_bookmark
-    user = models.ForeignKey('users.User', on_delete=models.CASCADE)
-    product = models.ForeignKey('Product', on_delete=models.CASCADE)
+    user_prod_rel = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='rela_user',
+                                      null=True)  # убрать null
+    product_prod_rel = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='rela_product',
+                                         null=True)  # бурать null
     rate = models.PositiveSmallIntegerField(choices=RATE_CHOICE, null=True, blank=True)
 
 
