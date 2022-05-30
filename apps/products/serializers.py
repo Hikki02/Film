@@ -32,7 +32,7 @@ class ProductCategoryRelationSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductCategoryRelation
         fields = (
-            'user', 'product',
+            'category', 'product',
         )
 
 
@@ -46,7 +46,7 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = (
             'id', 'category', 'name', 'year_of_release', 'type',
-            'num_of_ep', 'producer', 'rating', 'desc', 'teg',
+            'num_of_ep', 'producer', 'desc', 'teg',
             'product_video', 'product_image', 'short_epis_desc',
             'category_product',
         )
@@ -58,5 +58,6 @@ class ProductUserRelationSerializer(serializers.ModelSerializer):
         fields = ('user', 'product', 'rate', 'is_bookmark')
 
     def create(self, validated_data):
+
         obj, _ = ProductUserRelation.objects.get_or_create(**validated_data, )
         return obj

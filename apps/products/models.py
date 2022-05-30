@@ -29,6 +29,7 @@ class Product(models.Model):
     year_of_release = models.PositiveSmallIntegerField()
     type = models.CharField(max_length=50)
     num_of_ep = models.CharField(max_length=125)
+    num_of_ep = models.CharField(max_length=125)
     producer = models.CharField(max_length=125)
     desc = models.TextField()
     teg = models.CharField(max_length=225)
