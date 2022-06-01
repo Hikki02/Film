@@ -8,12 +8,12 @@ from apps.products.serializers import ProductSerializer, ProductUserRelationSeri
 
 
 class ProductList(ListAPIView):
-    queryset = Product.objects.filter().prefetch_related('product_image', 'product_video')
+    queryset = Product.objects.filter().prefetch_related('product_image')
     serializer_class = ProductSerializer
 
 
 class ProductDetail(RetrieveAPIView):
-    queryset = Product.objects.all()
+    queryset = Product.objects.filter()
     serializer_class = ProductDetailSerializer
 
 

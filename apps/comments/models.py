@@ -11,6 +11,9 @@ class ProductComment(models.Model):
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f'{self.id}'
+
 
 class LikeComment(models.Model):
     user = models.ForeignKey('users.User', on_delete=models.CASCADE,

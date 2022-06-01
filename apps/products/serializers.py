@@ -46,6 +46,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
             'product_comments'
         )
 
+
 class ProductUserRelationSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductUserRelation

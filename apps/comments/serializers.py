@@ -1,20 +1,24 @@
 from rest_framework import serializers as s
-
-from apps.categories.serializers import RecursiveSerializer
+from films.utils import RecursiveSerializser
 from apps.comments.models import ProductComment
 
 
-class RecursiveField(s.Serializer):
-    def to_representation(self, value):
-        serializer = self.parent.parent.__class__(
-            value,
-            context=self.context)
-        return serializer.data
+class ChildrenSerializer(s.ModelSerializer):
+    class Meta:
+        model = ProductComment
+        fields = ('user', 'product', 'text', 'created_at', 'is_active',)
 
 
 class ProductCommentSerializer(s.ModelSerializer):
-    children = RecursiveField(many=True)
+    children = RecursiveSerializser(many=True)
 
     class Meta:
         model = ProductComment
-        fields = ('parent', 'user', 'product', 'text', 'created_at', 'children',)
+        fields = ('user', 'product', 'text', 'created_at', 'is_active', 'children',)
+
+    def to_representation(self, instance):
+        response = super().to_representation(instance)
+        children = instance.children.filter(is_active=True)
+        response['children'] = ChildrenSerializer(children, many=True).data
+        return response
+

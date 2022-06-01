@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import ProductCommentCreateList
+from .views import ProductCommentCreate
 
 urlpatterns = [
-    path('comment/', ProductCommentCreateList.as_view()),
+    path('comment/', ProductCommentCreate.as_view()),
 ]

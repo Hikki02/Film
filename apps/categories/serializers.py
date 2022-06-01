@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Category
+from films.utils import RecursiveSerializser
 
 
 class FilterCategorySerializer(serializers.ListSerializer):
@@ -8,14 +9,8 @@ class FilterCategorySerializer(serializers.ListSerializer):
         return super().to_representation(data)
 
 
-class RecursiveSerializer(serializers.Serializer):
-    def to_representation(self, value):
-        serializer = self.parent.parent.__class__(value, context=self.context)
-        return serializer.data
-
-
 class CategorySerializer(serializers.ModelSerializer):
-    children = RecursiveSerializer(many=True)
+    children = RecursiveSerializser(many=True)
 
     class Meta:
         list_serializer_class = FilterCategorySerializer
