@@ -1,15 +1,20 @@
 from django.shortcuts import render
 
-from rest_framework.generics import ListAPIView, ListCreateAPIView, CreateAPIView
+from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveAPIView
 
+from apps.comments.models import ProductComment
 from apps.products.models import Product, ProductUserRelation
-from apps.products.serializers import ProductSerializer, ProductUserRelationSerializer
+from apps.products.serializers import ProductSerializer, ProductUserRelationSerializer, ProductDetailSerializer
 
 
 class ProductList(ListAPIView):
-    queryset = Product.objects.filter().prefetch_related('product_image', 'product_video',
-                                                         'short_epis_desc')
+    queryset = Product.objects.filter().prefetch_related('product_image', 'product_video')
     serializer_class = ProductSerializer
+
+
+class ProductDetail(RetrieveAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductDetailSerializer
 
 
 class ProductUserRelationCreateList(ListCreateAPIView):

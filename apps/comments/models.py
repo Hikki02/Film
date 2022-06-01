@@ -10,7 +10,6 @@ class ProductComment(models.Model):
     text = models.TextField()
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
 
 class LikeComment(models.Model):

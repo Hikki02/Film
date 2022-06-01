@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
-from apps.products.models import (Product, ProductCategoryRelation, VideoProduct,
-                                  ProductImage, ShortEpisodDesc, ProductUserRelation)
+from apps.comments.serializers import ProductCommentSerializer
+from apps.products.models import (Product, ProductVideo,
+                                  ProductImage, ProductUserRelation)
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
@@ -12,45 +13,38 @@ class ProductImageSerializer(serializers.ModelSerializer):
         )
 
 
-class VideoProductSerializer(serializers.ModelSerializer):
+class ProductVideoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = VideoProduct
+        model = ProductVideo
         fields = (
-            'name', 'video',
-        )
-
-
-class ShortEpisodDescSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ShortEpisodDesc
-        fields = (
-            'name', 'desc',
-        )
-
-
-class ProductCategoryRelationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProductCategoryRelation
-        fields = (
-            'category', 'product',
+            'name', 'video', 'desc'
         )
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    category_product = ProductCategoryRelationSerializer(many=True, read_only=True)
-    product_video = VideoProductSerializer(many=True, read_only=True)
     product_image = ProductImageSerializer(many=True, read_only=True)
-    short_epis_desc = ShortEpisodDescSerializer(many=True)
+
+    class Meta:
+        model = Product
+        fields = (
+            'id', 'category', 'name', 'year_of_release', 'type',
+            'num_of_ep', 'producer', 'desc', 'teg', 'product_image',
+        )
+
+
+class ProductDetailSerializer(serializers.ModelSerializer):
+    product_video = ProductVideoSerializer(many=True, read_only=True)
+    product_image = ProductImageSerializer(many=True, read_only=True)
+    product_comments = ProductCommentSerializer(many=True, )
 
     class Meta:
         model = Product
         fields = (
             'id', 'category', 'name', 'year_of_release', 'type',
             'num_of_ep', 'producer', 'desc', 'teg',
-            'product_video', 'product_image', 'short_epis_desc',
-            'category_product',
+            'product_video', 'product_image',
+            'product_comments'
         )
-
 
 class ProductUserRelationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -58,6 +52,5 @@ class ProductUserRelationSerializer(serializers.ModelSerializer):
         fields = ('user', 'product', 'rate', 'is_bookmark')
 
     def create(self, validated_data):
-
         obj, _ = ProductUserRelation.objects.get_or_create(**validated_data, )
         return obj
