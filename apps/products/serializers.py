@@ -33,18 +33,20 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class ProductDetailSerializer(serializers.ModelSerializer):
-    product_video = ProductVideoSerializer(many=True, read_only=True)
-    product_image = ProductImageSerializer(many=True, read_only=True)
-    product_comments = ProductCommentSerializer(many=True, )
+    video = ProductVideoSerializer(many=True, source='product_video')
+    images = ProductImageSerializer(many=True, source='product_image')
+    comments = ProductCommentSerializer(many=True, source='product_comments')
 
     class Meta:
         model = Product
         fields = (
             'id', 'category', 'name', 'year_of_release', 'type',
             'num_of_ep', 'producer', 'desc', 'teg',
-            'product_video', 'product_image',
-            'product_comments'
+            'video', 'images',
+            'comments'
         )
+
+
 
 
 class ProductUserRelationSerializer(serializers.ModelSerializer):

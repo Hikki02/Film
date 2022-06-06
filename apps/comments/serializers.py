@@ -19,6 +19,7 @@ class ProductCommentSerializer(s.ModelSerializer):
     def to_representation(self, instance):
         response = super().to_representation(instance)
         children = instance.children.filter(is_active=True)
+
         response['children'] = ChildrenSerializer(children, many=True).data
         return response
 
