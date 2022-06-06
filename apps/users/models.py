@@ -14,26 +14,27 @@ class UserManager(BaseUserManager):
             if not k:
                 raise ValueError('You have not entered %s' % v)
 
-    def _create(self, email: str, password: str, **extra) -> None:
-        self._validate(email=email, password=password)
+    def _create(self, username: str, password: str, email: str, **extra) -> None:
+        self._validate(username, password, email)
         user = self.model(email=self.normalize_email(email),
                           **extra)
         user.set_password(raw_password=password)
         user.save()
 
     def create_user(self,
-                    email: str,
-                    password: str) -> None:
-        self._create(email, password)
+                    username: str,
+                    password: str,
+                    email: str) -> None:
+        self._create(username=username, password=password, email=email)
 
     def create_superuser(self,
-                         email: str,
-                         password: str) -> None:
-        self._create(email, password, is_staff=True, is_superuser=True, is_active=True)
-
+                         username,
+                         password,
+                         email) -> None:
+        self._create(username=username, password=password, email=email, is_staff=True, is_superuser=True, is_active=True)
 
 class User(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(max_length=255)
+    username = models.CharField(max_length=255, blank=True)
     email = models.EmailField(unique=True)
     avatar = models.ImageField(upload_to='users/uploads/%Y/%m/%d/', null=True, blank=True)
 
@@ -46,7 +47,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ()
+    REQUIRED_FIELDS = []
 
     class Meta:
         app_label = 'users'

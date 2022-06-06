@@ -4,6 +4,8 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
+
+
 schema_view = get_schema_view(
    openapi.Info(
       title="Films API",
@@ -32,5 +34,10 @@ urlpatterns = [
     path('', include('apps.feedback.urls')),
     path('', include('apps.products.urls')),
     path('', include('apps.users.urls')),
+    #registration
+    path('auth/', include('rest_framework_social_oauth2.urls')),
+
+
+
 ]
 
