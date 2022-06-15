@@ -16,13 +16,15 @@ class ProductList(ListAPIView):
 
 
 class ProductDetail(RetrieveAPIView):
-    queryset = Product.objects.filter()
+    queryset = Product.objects.prefetch_related('user_product').filter()
+        # .select_related(
+        # 'rela_product', 'rela_user')
     serializer_class = ProductDetailSerializer
 
-    def retrieve(self, request, *args, **kwargs):
-        comments = ProductComment.objects.filter(is_active=True, product_id=self.queryset)
-
-        return Response( status=status.HTTP_200_OK)
+    # def retrieve(self, request, *args, **kwargs):
+    #     instance = Product.objects.filter(product_id=self.queryset)
+    #     serializer = ProductDetailSerializer(instance=instance)
+    #     return Response(serializer.data)
 
 
 class ProductUserRelationCreateList(ListCreateAPIView):

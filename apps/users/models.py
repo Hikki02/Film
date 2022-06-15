@@ -4,6 +4,7 @@ from django.contrib.auth.models import (
     PermissionsMixin
 )
 from django.db import models
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 class UserManager(BaseUserManager):
@@ -14,8 +15,8 @@ class UserManager(BaseUserManager):
             if not k:
                 raise ValueError('You have not entered %s' % v)
 
-    def _create(self, email: str, password: str, **extra) -> None:
-        self._validate(email=email, password=password)
+    def _create(self, email: str, username: str, password: str, **extra) -> None:
+        self._validate(email=email, username=username, password=password)
         user = self.model(email=self.normalize_email(email),
                           **extra)
         user.set_password(raw_password=password)
@@ -23,17 +24,19 @@ class UserManager(BaseUserManager):
 
     def create_user(self,
                     email: str,
+                    username: str,
                     password: str) -> None:
-        self._create(email, password)
+        self._create(email, password, username)
 
     def create_superuser(self,
                          email: str,
+                         username: str,
                          password: str) -> None:
-        self._create(email, password, is_staff=True, is_superuser=True, is_active=True)
+        self._create(email, username, password, is_staff=True, is_superuser=True, is_active=True)
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(max_length=255)
+    username = models.CharField(max_length=255, unique=True)
     email = models.EmailField(unique=True)
     avatar = models.ImageField(upload_to='users/uploads/%Y/%m/%d/', null=True, blank=True)
 
@@ -46,7 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ()
+    REQUIRED_FIELDS = ('username',)
 
     class Meta:
         app_label = 'users'
@@ -55,4 +58,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return f'{self.username}'
 
+    def get_tokens(self):
+        refresh = RefreshToken.for_user(self)
+        return {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token)
+        }
+
     objects = UserManager()
+
+

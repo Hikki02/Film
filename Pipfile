@@ -10,6 +10,7 @@ install = "*"
 drf-yasg = "*"
 pillow = "*"
 django-translator = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 django-debug-toolbar = "*"
