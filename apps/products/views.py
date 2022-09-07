@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.db.models import Subquery
+from django.db.models import Subquery, Prefetch
 from rest_framework import status
 from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveAPIView
 
@@ -16,9 +16,7 @@ class ProductList(ListAPIView):
 
 
 class ProductDetail(RetrieveAPIView):
-    queryset = Product.objects.prefetch_related('user_product').filter()
-        # .select_related(
-        # 'rela_product', 'rela_user')
+    queryset = Product.objects.filter()
     serializer_class = ProductDetailSerializer
 
     # def retrieve(self, request, *args, **kwargs):

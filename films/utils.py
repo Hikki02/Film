@@ -7,3 +7,9 @@ class RecursiveSerializser(s.Serializer):
             value,
             context=self.context)
         return serializer.data
+
+
+class FilterCategorySerializer(s.ListSerializer):
+    def to_representation(self, data):
+        data = data.filter(parent=None)
+        return super().to_representation(data)

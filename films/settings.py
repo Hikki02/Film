@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 from decouple import config
 
@@ -86,10 +86,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
-    'DEFAULT_PAGINATION_CLASS':
-        'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
-    'ORDERING_PARAM': 'ordering',
+    # 'DEFAULT_PAGINATION_CLASS':
+    #     'rest_framework.pagination.PageNumberPagination',
+    # 'PAGE_SIZE': 10,
+    # 'ORDERING_PARAM': 'ordering',
 }
 
 
@@ -117,15 +117,22 @@ AUTH_USER_MODEL = 'users.User'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+# DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': 'films',
+#        'USER': 'hikki',
+#        'PASSWORD': 'adi',
+#        'HOST': 'localhost',
+#        'PORT': '5432',
+#    }
+# }
+
 DATABASES = {
-   'default': {
-       'ENGINE': 'django.db.backends.postgresql_psycopg2',
-       'NAME': 'films',
-       'USER': 'hikki',
-       'PASSWORD': 'adi',
-       'HOST': 'localhost',
-       'PORT': '5432',
-   }
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
 }
 
 # Password validation

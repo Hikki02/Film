@@ -11,7 +11,7 @@ class ProductUserRelation(models.Model):
 
 
 class Product(models.Model):
-    category = models.ManyToManyField('categories.Category', related_name='product_category')
+    category = models.ManyToManyField('categories.Category', related_name='product_categ')
     user = models.ManyToManyField('users.User', through='ProductUserRelation', related_name='user_product')
     name = models.CharField(max_length=250)
     year_of_release = models.PositiveSmallIntegerField()

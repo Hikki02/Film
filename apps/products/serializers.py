@@ -33,21 +33,19 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class ProductDetailSerializer(serializers.ModelSerializer):
-    comments = ProductCommentSerializer(many=True, source='product_comments')
-
+    """Добавить видео и т.д"""
     class Meta:
         model = Product
         fields = (
             'id', 'category', 'name', 'year_of_release', 'type',
             'num_of_ep', 'producer', 'desc', 'teg',
-            'comments'
         )
 
-    # def to_representation(self, instance):
-    #     response = super().to_representation(instance)
-    #     # comment = instance.comments.filter(is_active=True)
-    #     response['comments'] = ProductCommentSerializer(instance.comments, many=True).data
-    #     return response
+    def to_representation(self, instance):
+        response = super().to_representation(instance)
+        comment = instance.comments.filter(is_active=True)
+        response['comments'] = ProductCommentSerializer(instance.comments, many=True).data
+        return response
 
 
 class ProductUserRelationSerializer(serializers.ModelSerializer):
