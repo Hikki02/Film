@@ -1,58 +1,46 @@
 from rest_framework import serializers
+from apps.products.models import (ProductUserRelation, Product)
+from .base import BaseProductSerializer, BaseProductVideoSerializer, BaseProductUserRelationSerializer, BaseSerializer
+from .settings import RATE_CHOICE
+from .. import users
+from ..users.serializers import UserProfileSerializer
 
-from apps.comments.serializers import ProductCommentSerializer
-from apps.products.models import (Product, ProductVideo,
-                                  ProductImage, ProductUserRelation)
-
-
-class ProductImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProductImage
-        fields = (
-            'image', 'is_main',
-        )
+from apps.users.models import User
 
 
-class ProductVideoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProductVideo
-        fields = (
-            'name', 'video', 'desc'
-        )
+class ProductSerializer(BaseProductSerializer):
+    ...
 
 
-class ProductSerializer(serializers.ModelSerializer):
-    product_image = ProductImageSerializer(many=True, read_only=True)
+class ProductDetailSerializer(BaseProductSerializer):
+    product_video = BaseProductVideoSerializer(many=True)
 
     class Meta:
         model = Product
-        fields = (
-            'id', 'category', 'name', 'year_of_release', 'type',
-            'num_of_ep', 'producer', 'desc', 'teg', 'product_image',
-        )
+        fields = BaseProductSerializer.Meta.fields + ['product_video']
+    # def to_representation(self, instance):
+    #     response = super().to_representation(instance)
+    #     comments = instance.comments.filter(is_active=True)
+    #     response['comments'] = ProductCommentSerializer(instance.comments, many=True).data
+    #     return response
 
 
-class ProductDetailSerializer(serializers.ModelSerializer):
-    """Добавить видео и т.д"""
+# class ProductUserRelationSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = ProductUserRelation
+#         fields = ('user', 'product'
+#         , 'rate', 'is_bookmark')
+#
+#     def create(self, validated_data):
+#         obj, _ = ProductUserRelation.objects.get_or_create(**validated_data, )
+#         return obj
+
+class UserSerializer(BaseSerializer):
+    username = serializers.CharField(max_length=225)
+
     class Meta:
-        model = Product
-        fields = (
-            'id', 'category', 'name', 'year_of_release', 'type',
-            'num_of_ep', 'producer', 'desc', 'teg',
-        )
-
-    def to_representation(self, instance):
-        response = super().to_representation(instance)
-        comment = instance.comments.filter(is_active=True)
-        response['comments'] = ProductCommentSerializer(instance.comments, many=True).data
-        return response
+        model = User
 
 
-class ProductUserRelationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProductUserRelation
-        fields = ('user', 'product', 'rate', 'is_bookmark')
-
-    def create(self, validated_data):
-        obj, _ = ProductUserRelation.objects.get_or_create(**validated_data, )
-        return obj
+class ProductUserRelationSerializer(BaseProductUserRelationSerializer):
+    ...

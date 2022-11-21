@@ -1,7 +1,12 @@
 from django.contrib import admin
 
 from apps.products.models import Product, ProductVideo, ProductImage, \
-    ProductUserRelation
+    ProductUserRelation, Producer
+
+
+@admin.register(Producer)
+class ProducerAdmin(admin.ModelAdmin):
+    ...
 
 
 @admin.register(Product)

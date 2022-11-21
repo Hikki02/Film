@@ -29,4 +29,4 @@ class ProductUserRelationCreateList(ListCreateAPIView):
     serializer_class = ProductUserRelationSerializer
 
     def get_queryset(self):
-        return ProductUserRelation.objects.filter(user=self.request.user)
+        return ProductUserRelation.objects.filter()

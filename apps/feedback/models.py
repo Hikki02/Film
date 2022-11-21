@@ -8,4 +8,7 @@ class FeedBack(models.Model):
     email = models.EmailField()
     type_message = models.PositiveSmallIntegerField(choices=utils.FEEDBACK_CHOICE)
     text = models.TextField()
-    create_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'feedback'

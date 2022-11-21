@@ -11,6 +11,7 @@ drf-yasg = "*"
 pillow = "*"
 django-translator = "*"
 djangorestframework-simplejwt = "*"
+category = "*"
 
 [dev-packages]
 django-debug-toolbar = "*"

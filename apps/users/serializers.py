@@ -41,3 +41,9 @@ class RegistrationSerializer(s.ModelSerializer):
         self.save_and_checking_for_uniqueness(user)
         self._send_email(user)
         return validated_data
+
+
+class UserProfileSerializer(s.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username',)
