@@ -1,4 +1,5 @@
 from rest_framework import serializers as s
+
 from .models import Category
 from films.utils import RecursiveSerializser
 
@@ -9,9 +10,9 @@ class FilterCategorySerializer(s.ListSerializer):
         return super().to_representation(data)
 
 
-class CategorySerializer(s.Serializer):
-    name = s.CharField(max_length=225)
+class CategorySerializer(s.ModelSerializer):
     children = RecursiveSerializser(many=True)
 
     class Meta:
-        list_serializer_class = FilterCategorySerializer
+        model = Category
+        fields = ('id', 'name', 'children', 'is_main')
