@@ -1,4 +1,5 @@
-from rest_framework import generics
+from rest_framework import generics, status
+from rest_framework.response import Response
 
 from .serializers import CategorySerializer
 from .models import Category
@@ -16,4 +17,7 @@ class CategoryRetrieve(generics.RetrieveAPIView):
     serializer_class = CategorySerializer
 
     def get_object(self, queryset=None):
-        return get_product(pk=self.kwargs['pk'])
+        category_id = self.kwargs['pk']
+        category = get_product(category_id)
+        # serializer = CategorySerializer(category)
+        return category

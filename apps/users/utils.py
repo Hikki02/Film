@@ -1,5 +1,9 @@
 from decouple import config
 from django.core.mail import EmailMessage
+from django.db import IntegrityError
+from rest_framework.exceptions import ValidationError
+
+from apps.users.models import User
 
 
 class Email:
@@ -27,3 +31,17 @@ class Email:
     def send(self):
         data = self.get_message_data()
         self.send_email(EmailMessage(**data))
+
+
+def save_user_and_checking_for_uniqueness(user: User) -> None:
+    try:
+        user.save()
+    except IntegrityError:
+        raise ValidationError({
+            'error': 'This email is already exist'
+        })
+
+
+def _send_email(user: User) -> None:
+    email = Email(user)
+    email.send()

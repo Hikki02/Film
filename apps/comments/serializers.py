@@ -16,9 +16,9 @@ class ProductCommentSerializer(s.ModelSerializer):
         model = ProductComment
         fields = ('user', 'product', 'text', 'created_at', 'is_active', 'is_active', 'children',)
 
-    def to_representation(self, instance):
-        response = super().to_representation(instance)
-        # children = instance.children.filter(is_active=True)
-        response['children'] = ChildrenSerializer(instance.children, many=True).data
-        return response
+    # def to_representation(self, instance):
+    #     response = super().to_representation(instance)
+    #     children = instance.children.filter(is_active=True)
+        # response['children'] = ChildrenSerializer(instance.children, many=True).data
+        # return response
 

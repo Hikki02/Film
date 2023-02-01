@@ -1,38 +1,11 @@
 from django.db.models import Manager
+from django.http import HttpResponse
+from rest_framework import status
+from rest_framework.response import Response
 
 from apps.categories.models import Category
-
-
-def select_related_decorator(service_func: callable):
-    def select_related_wrapper(objects, select_related=(), **kwargs):
-        return service_func(objects, **kwargs).select_related(*select_related)
-
-    return select_related_wrapper
-
-
-def prefetch_related_decorator(service_func: callable):
-    def prefetch_related_wrapper(objects, prefetch_related=(), **kwargs):
-        return service_func(objects, **kwargs).prefetch_related(*prefetch_related)
-    return prefetch_related_wrapper
-
-
-def only_field_decorator(service_func: callable):
-    def only_field_wrapper(objects, only=(), **kwargs):
-        return service_func(objects, **kwargs).only(*only)
-
-    return only_field_wrapper
-
-
-@select_related_decorator
-@prefetch_related_decorator
-@only_field_decorator
-def all_object(objects: Manager, **kwargs):
-    return objects.all(**kwargs)
-
-
-# @select_related_decorator
-def get_object(objects: Manager, **kwargs):
-    return objects.get(**kwargs)
+from apps.categories.serializers import CategorySerializer
+from commands.services import all_object, get_object
 
 
 def get_all_products():
@@ -42,12 +15,21 @@ def get_all_products():
                       )
 
 
+def generateError(errorCode):
+    return {
+        'status': status.HTTP_404_NOT_FOUND,
+        'data': {
+            'error': True,
+            'code': errorCode
+        }
+    }
+
 def get_product(pk: int):
     """
     нужно сделать что бы select related b prefect related работал
     """
-    return get_object(
-        Category.objects,
-        # select_related=('parent',),
-        pk=pk,
-    )
+    try:
+        category = get_object(Category.objects, pk=pk)
+        return category
+    except Category.DoesNotExist:
+        return Response(**generateError('DOES_NOT_EXIST'))
