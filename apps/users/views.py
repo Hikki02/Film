@@ -7,7 +7,8 @@ from rest_framework.response import Response
 
 from apps.users.models import User
 from apps.users.serializers import RegistrationSerializer
-from apps.users.services import create_user, get_all_users, get_user_by_id, save_user
+from apps.users.services import create_user, get_all_users, get_user_by_id
+from apps.users.utils import save_user
 
 
 def validate(token) -> None:

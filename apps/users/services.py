@@ -17,10 +17,6 @@ def get_all_users():
     )
 
 
-def save_user(user: User) -> None:
-    user.save()
-
-
 def get_user_by_id(user_id):
     try:
         user = filter_object(User.objects, id=user_id, first_object=())

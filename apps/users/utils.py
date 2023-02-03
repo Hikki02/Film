@@ -45,3 +45,7 @@ def save_user_and_checking_for_uniqueness(user: User) -> None:
 def _send_email(user: User) -> None:
     email = Email(user)
     email.send()
+
+
+def save_user(user: User) -> None:
+    user.save()

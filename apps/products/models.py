@@ -1,7 +1,7 @@
 # from transliterate import translit
 from django.db import models
-from .settings import RATE_CHOICE
-from .utils import get_upload_path
+
+from .utils import get_upload_path, RATE_CHOICE
 
 
 class BaseModel(models.Model):
