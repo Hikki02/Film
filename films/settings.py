@@ -40,22 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # apps
-    'apps.categories',
-    'apps.comments',
-    'apps.feedback',
-    'apps.products',
-    'apps.users',
-
     # lib
     'rest_framework',
     'drf_yasg',
-    "debug_toolbar",
-    'django_extensions',
-    # 'taggit',
-    # 'translator',
+    'celery',
     'rest_framework_simplejwt',
-
 
 ]
 
@@ -73,8 +62,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'films.urls'
@@ -86,10 +73,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
-    # 'DEFAULT_PAGINATION_CLASS':
-    #     'rest_framework.pagination.PageNumberPagination',
-    # 'PAGE_SIZE': 10,
-    # 'ORDERING_PARAM': 'ordering',
 }
 
 
@@ -111,27 +94,20 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'films.wsgi.application'
-AUTH_USER_MODEL = 'users.User'
 
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#        'NAME': 'films',
-#        'USER': 'hikki',
-#        'PASSWORD': 'adi',
-#        'HOST': 'localhost',
-#        'PORT': '5432',
-#    }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': config('SQL_ENGINE'),
+        'NAME': config('SQL_DATABASE'),
+        'USER': config('SQL_USER'),
+        'PASSWORD': config('SQL_PASSWORD'),
+        'HOST': config('SQL_HOST'),
+        'PORT': config('SQL_PORT'),
+
     }
 }
 
@@ -169,8 +145,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-MEDIA_URL = 'media/'
-STATIC_URL = 'static/'
+MEDIA_URL = '/media/'
+STATIC_URL = '/static/'
 
 STATIC_ROOT = BASE_DIR / 'static/'
 MEDIA_ROOT = BASE_DIR / 'media/'
@@ -180,46 +156,3 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-from datetime import timedelta
-
-
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'ROTATE_REFRESH_TOKENS': False,
-    'BLACKLIST_AFTER_ROTATION': False,
-    'UPDATE_LAST_LOGIN': False,
-
-    'ALGORITHM': 'HS256',
-    'SIGNING_KEY': SECRET_KEY,
-    'VERIFYING_KEY': None,
-    'AUDIENCE': None,
-    'ISSUER': None,
-    'JWK_URL': None,
-    'LEEWAY': 0,
-
-    'AUTH_HEADER_TYPES': ('Bearer',),
-    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
-    'USER_ID_FIELD': 'id',
-    'USER_ID_CLAIM': 'user_id',
-    'USER_AUTHENTICATION_RULE': 'rest_framework_simplejwt.authentication.default_user_authentication_rule',
-
-    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
-    'TOKEN_TYPE_CLAIM': 'token_type',
-    'TOKEN_USER_CLASS': 'rest_framework_simplejwt.models.TokenUser',
-
-    'JTI_CLAIM': 'jti',
-
-    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
-    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
-    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
-}
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = config('EMAIL_HOST_USER', cast=str)
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', cast=str)
-
